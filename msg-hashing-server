@@ -7,21 +7,17 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 
 class HashMessageServer(BaseHTTPRequestHandler):
     hash_msg_dict = {}
-    err_msg = {"err_msg": "Message not found"}
+    ERROR_MESSAGE = {"err_msg": "Message not found"}
 
-    def _send_response_header(self):
-        self.send_response(200)
-        self.send_header('Content-type', 'text/html')
+    def _send_error_header(self):
+        self.send_response(404)
+        self.send_header('Content-type', 'application/json')
         self.end_headers()
-
-    def do_HEAD(self):
-        self._send_response_header()
 
     def log_message(self, format, *args):
         return
 
     def do_GET(self):
-        self._send_response_header()
         params = self.path.strip().split('/')
         if len(params) == 3:
             hash_val = params.pop()
@@ -30,24 +26,27 @@ class HashMessageServer(BaseHTTPRequestHandler):
                 response = json.dumps(msg)
                 response_unicode = response.encode('utf-8')
                 self.wfile.write(response_unicode)
-        else:
-            response = json.dumps(self.err_msg)
-            response_unicode = response.encode('utf-8')
-            self.send_error(404, response)
+        response = json.dumps(self.ERROR_MESSAGE)
+        response_unicode = response.encode('utf-8')
+        self._send_error_header()
+        self.wfile.write(response_unicode)
 
     def hash_string(self, string):
         return hashlib.sha256(string.encode('utf-8')).hexdigest()
 
     def do_POST(self):
-        self._send_response_header()
-        unicode_data = self.rfile.read(int(self.headers['Content-Length']))
-        message_data = unicode_data.decode('utf-8')
-        message = json.loads(message_data)
-        hashed_msg = self.hash_string(message.get('message'))
-        self.hash_msg_dict[hashed_msg] = message
-        response = json.dumps({"digest": hashed_msg})
-        response_unicode = response.encode('utf-8')
-        self.wfile.write(response_unicode)
+        try:
+            unicode_data = self.rfile.read(int(self.headers['Content-Length']))
+            message_data = unicode_data.decode('utf-8')
+            message = json.loads(message_data)
+            hashed_msg = self.hash_string(message.get('message'))
+            self.hash_msg_dict[hashed_msg] = message
+            response = json.dumps({"digest": hashed_msg})
+            response_unicode = response.encode('utf-8')
+            self.wfile.write(response_unicode)
+        except:
+            self._send_error_header()
+            raise ValueError("Invalid input")
 
 def run(server_class=HTTPServer, handler_class=HashMessageServer):
     hash_msg_server = server_class(('127.0.0.1', 8000), handler_class)
@@ -55,9 +54,8 @@ def run(server_class=HTTPServer, handler_class=HashMessageServer):
         print ("Server Starts - {0}:{1} - use <Ctrl-C> to stop".format('127.0.0.1', 8000))
         hash_msg_server.serve_forever()
     except KeyboardInterrupt:
-        pass
-    hash_msg_server.server_close()
-    print ("Server Stops - {0}:{1}".format('127.0.0.1', 8000))
+        hash_msg_server.server_close()
+        print ("Server Stops - {0}:{1}".format('127.0.0.1', 8000))
 
 if __name__ == '__main__':
     run()
