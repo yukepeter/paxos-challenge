@@ -59,7 +59,7 @@ python3 find-pair.py prices.txt 2500
 ```
 #### Big O notation for your program?
 ```
-Big O Notation for this script is `O(N)`. It will scale linearly proportional
+Big O Notation for this script is O(N). It will scale linearly proportional
 to the length of the prices list.
 ```
 
@@ -70,6 +70,6 @@ python3 find-pair.py prices.txt 2500 3
 ```
 #### Big O notation for your bonus program?
 ```
-Big O Notation for this script is `O(N^2)`. It will scale linearly proportional
+Big O Notation for this script is O(N^2). It will scale linearly proportional
 to the length of the prices list.
 ```
