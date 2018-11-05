@@ -51,9 +51,7 @@ We can adopt memcach and Redis to provide a fast, in-memory caching of the frequ
 
 ## Challenge 2
 
-Big O Notation for this script is O(N)
-
-To run test
+To run test for challenge 2
 ```
 python3 find-pair.py prices.txt 2500
 ```
