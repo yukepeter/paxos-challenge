@@ -49,7 +49,7 @@ There are multiple ways to increase the ability of our server to perform more to
 We can adopt memcach and Redis to provide a fast, in-memory caching of the frequently queried hashing message. Otherwise, we could use sharding  to partition user on to different severs along with their hashed messages. 
 
 
-## Challenge #2
+## Challenge 2
 
 Big O Notation for this script is O(N)
 ### Bonus Question 
