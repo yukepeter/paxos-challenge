@@ -52,7 +52,7 @@ We can adopt memcach and Redis to provide a fast, in-memory caching of the frequ
 ## Challenge 2
 
 Big O Notation for this script is O(N)
-### Bonus Question 
+
 To run test
 ```
 python3 find-pair.py prices.txt 2500
@@ -63,6 +63,7 @@ Big O Notation for this script is O(N). It will scale linearly proportional
 to the length of the prices list.
 ```
 
+### Bonus Question 
 You can run the previous command plus an extra parameter to get the result.
 
 ```
