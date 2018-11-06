@@ -4,7 +4,7 @@ Challenge description can be find [here](https://drive.google.com/file/d/1KAx8-5
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See following notes on how to test it.
 
 ### Prerequisites
 
@@ -16,18 +16,13 @@ Follew instructions to run test for two challenges
 
 ## Challenge 1
 
-Make sure port 8000 is not being used and run the server use
+Then open a new terminal as client, then post a message to the server, you can change the content of the message. Please note the ip address of our server is 13.58.64.60 and the port is 8000
 ```
-$ ./msg-hashing-server
-```
-Then open a new terminal as client, then run to post a message to our server, you can change the content of the message.
-```
-$ curl -X POST -H "Content-Type: application/json" -d '{"message": "foo"}' http://localhost:8000/
+curl -X POST -H "Content-Type: application/json" -d '{"message": "foo"}' http://13.58.64.60:8000/
 ```
 You can then query your service for the original message:
 ```
-$ curl http://localhost:8000/messages/2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f9
-8a5e886266e7ae
+$ curl http://13.58.64.60:8000/messages/2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae
 ```
 You can calculate that your result is correct on the command line:
 ```
@@ -35,7 +30,7 @@ $ echo -n "foo" | shasum -a 256 2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0
 ```
 If you send a request to a non-existent <hash>, you should expect to receive a 404 error:
 ```
-$ curl -i http://localhost:8000/messages/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+$ curl -i http://13.58.64.60:8000/messages/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaa
 ```
 ### Performance Question
