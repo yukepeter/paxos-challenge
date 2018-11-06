@@ -5,9 +5,17 @@ import hashlib
 
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
+HOST_ADDRESS = '127.0.0.1'
+PORT_NUMBER = 8000
+
 class HashMessageServer(BaseHTTPRequestHandler):
     hash_msg_dict = {}
     ERROR_MESSAGE = {"err_msg": "Message not found"}
+
+    def _send_response_header(self):
+        self.send_response(200)
+        self.send_header('Content-type', 'application/json')
+        self.end_headers()
 
     def _send_error_header(self):
         self.send_response(404)
@@ -17,7 +25,11 @@ class HashMessageServer(BaseHTTPRequestHandler):
     def log_message(self, format, *args):
         return
 
+    def do_HEAD(self):
+        self._send_response_header()
+        
     def do_GET(self):
+        self._send_response_header()
         params = self.path.strip().split('/')
         if len(params) == 3:
             hash_val = params.pop()
@@ -33,7 +45,7 @@ class HashMessageServer(BaseHTTPRequestHandler):
                 self.wfile.write(response_unicode)
         else:
             self._send_error_header()
-            raise ValueError("Invalid input")
+            self.wfile.write("Invalid input".encode('utf-8'))
 
     def hash_string(self, string):
         return hashlib.sha256(string.encode('utf-8')).hexdigest()
@@ -50,16 +62,16 @@ class HashMessageServer(BaseHTTPRequestHandler):
             self.wfile.write(response_unicode)
         except:
             self._send_error_header()
-            raise ValueError("Invalid input")
+            self.wfile.write("Invalid input\n".encode('utf-8'))
 
 def run(server_class=HTTPServer, handler_class=HashMessageServer):
-    hash_msg_server = server_class(('127.0.0.1', 8000), handler_class)
+    hash_msg_server = server_class((HOST_ADDRESS, PORT_NUMBER), handler_class)
     try:
-        print ("Server Starts - {0}:{1} - use <Ctrl-C> to stop".format('127.0.0.1', 8000))
+        print ("Server Starts - {0}:{1} - use <Ctrl-C> to stop".format(HOST_ADDRESS, PORT_NUMBER))
         hash_msg_server.serve_forever()
     except KeyboardInterrupt:
         hash_msg_server.server_close()
-        print ("Server Stops - {0}:{1}".format('127.0.0.1', 8000))
+        print ("Server Stops - {0}:{1}".format(HOST_ADDRESS, PORT_NUMBER))
 
 if __name__ == '__main__':
     run()
