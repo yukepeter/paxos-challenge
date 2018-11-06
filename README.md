@@ -16,14 +16,13 @@ Follew instructions to run test for two challenges
 
 ## Challenge 1
 
-Then open a new terminal as client, then run to post a message to the server, you can change the content of the message. Please note the ip address of our server is 13.58.64.60 and the port is 8000
+Then open a new terminal as client, then post a message to the server, you can change the content of the message. Please note the ip address of our server is 13.58.64.60 and the port is 8000
 ```
 curl -X POST -H "Content-Type: application/json" -d '{"message": "foo"}' http://13.58.64.60:8000/
 ```
 You can then query your service for the original message:
 ```
-$ curl http://13.58.64.60:8000/messages/2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f9
-8a5e886266e7ae
+$ curl http://13.58.64.60:8000/messages/2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae
 ```
 You can calculate that your result is correct on the command line:
 ```
