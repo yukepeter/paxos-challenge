@@ -26,10 +26,14 @@ class HashMessageServer(BaseHTTPRequestHandler):
                 response = json.dumps(msg)
                 response_unicode = response.encode('utf-8')
                 self.wfile.write(response_unicode)
-        response = json.dumps(self.ERROR_MESSAGE)
-        response_unicode = response.encode('utf-8')
-        self._send_error_header()
-        self.wfile.write(response_unicode)
+            else:
+                response = json.dumps(self.ERROR_MESSAGE)
+                response_unicode = response.encode('utf-8')
+                self._send_error_header()
+                self.wfile.write(response_unicode)
+        else:
+            self._send_error_header()
+            raise ValueError("Invalid input")
 
     def hash_string(self, string):
         return hashlib.sha256(string.encode('utf-8')).hexdigest()
